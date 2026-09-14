@@ -116,9 +116,30 @@ Cambia estas contraseñas antes de cualquier uso real (o borra
 ### Verificación
 
 ```bash
-npm run verificar  # 50 pruebas de las reglas de negocio
-npm run build      # compilación de producción
+npm run verificar     # 50 pruebas de las reglas de negocio
+npm run build         # compilación de producción
 ```
+
+## Despliegue (Coolify)
+
+La demo corre en **https://demo-vacacionese3.urieljareth.org** como
+aplicación Coolify (build pack Dockerfile, repo
+`github.com/urieljarethbusiness-cpu/vacaciones-e3`, rama `main`,
+puerto 3000) sobre el servidor de la infraestructura propia
+(Proxmox + Coolify, `*.urieljareth.org` vía Cloudflare → Traefik).
+
+- **Volumen persistente**: `/app/datos` (base SQLite + comprobantes). El
+  `docker-compose.yaml` del directorio del servicio en el servidor lleva el
+  volumen `vacaciones-e3-datos` montado a mano (mismo patrón del demo de E3
+  Manager: «docker compose up -d en el directorio del servicio Coolify»).
+- **Datos de prueba**: la imagen lleva la semilla `datos/vacaciones-e3.db.gz`
+  (comprimida para no rebasar el límite de argumentos del desplegador). Si el
+  volumen se pierde o se recrea el contenedor, el entrypoint vuelve a sembrar
+  la demo completa — la demo se autorepara.
+- **Redespliegue**: desde la UI de Coolify («Deploy») o
+  `docker compose up -d` en el directorio del servicio.
+- Redes y DNS: el subdominio apunta a Cloudflare (proxy) y Traefik resuelve
+  el certificado con `letsencryptresolver`.
 
 ## Arquitectura
 
