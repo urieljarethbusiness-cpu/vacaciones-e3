@@ -1,0 +1,472 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * `solo-raton:` — se aplica cuando NO hay ningún puntero grueso disponible.
+ *
+ * Es el complemento exacto del bloque `@media (any-pointer: coarse)` de más
+ * abajo, y existe porque `pointer-fine:` NO sirve para esto: `pointer`
+ * describe el apuntador PRIMARIO, así que un portátil táctil de Windows o un
+ * iPad con trackpad declaran `pointer: fine` aunque su pantalla se siga
+ * tocando con el dedo. En esas máquinas `pointer-fine:` encogía los campos a
+ * 14 px —y con ellos volvía el zoom automático— y dejaba las celdas del
+ * calendario en 32 px.
+ *
+ * Regla de uso: para AGRANDAR con el dedo, `@media (any-pointer: coarse)`.
+ * Para compactar con ratón, `solo-raton:`. Nunca `pointer-fine:`.
+ */
+@custom-variant solo-raton (@media (not (any-pointer: coarse)));
+
+/*
+ * `pantalla-alta:` — hay ALTO suficiente para una pantalla de escritorio.
+ *
+ * Los puntos de corte de Tailwind solo miran el ancho, y eso deja un caso
+ * absurdo: un iPhone en horizontal mide 852 px de ancho, así que la
+ * aplicación lo trataba como un escritorio y sacaba la barra lateral… con 393
+ * px de alto. Medido en el chat de un ticket: la barra se llevaba el 31 % del
+ * ancho y al hilo de la conversación le quedaban 32 px — ni una burbuja.
+ *
+ * Se usa SIEMPRE compuesto con el ancho (`md:pantalla-alta:flex`), nunca
+ * suelto, para que la condición sea «ancho de escritorio Y alto de
+ * escritorio». Compuesto no hay conflicto de utilidades: cada elemento
+ * declara un solo estado base y una sola excepción.
+ */
+@custom-variant pantalla-alta (@media (min-height: 600px));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-poppins);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-poppins);
+  /*
+   * `font-display` = Bebas Neue, la tipografía de display de la marca (la del
+   * descriptor del logotipo). Existe como utilidad y NO se aplica a nada por
+   * defecto: es condensada, de caja alta única y sin cursiva, así que sirve
+   * para un rótulo corto y estorba en cualquier cosa que haya que leer.
+   * Los tamaños y contrastes de esta plataforma están medidos para clientes de
+   * más de 50 años; cambiar un texto medido por una condensada en versalitas
+   * deshace ese trabajo. Úsala en cifras grandes o rótulos, con intención.
+   */
+  --font-display: var(--font-bebas);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Tema CLARO de marca E3 (default del portal de clientes):
+ * fondo blanco cálido, texto casi negro, acento azul cian #029bca.
+ * Pensado para lectura cómoda de clientes +50 años.
+ */
+:root {
+  --background: oklch(0.99 0.002 240);
+  --foreground: oklch(0.18 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0 0);
+  --primary: oklch(0.6 0.13 226);            /* #029bca */
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.96 0.004 240);
+  --secondary-foreground: oklch(0.24 0 0);
+  --muted: oklch(0.965 0.004 240);
+  --muted-foreground: oklch(0.48 0.01 240);
+  --accent: oklch(0.95 0.02 226);
+  --accent-foreground: oklch(0.24 0.03 226);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0.005 240);
+  --input: oklch(0.9 0.005 240);
+  --ring: oklch(0.6 0.13 226);
+  --chart-1: oklch(0.6 0.13 226);
+  --chart-2: oklch(0.7 0.1 200);
+  --chart-3: oklch(0.5 0.12 250);
+  --chart-4: oklch(0.65 0.09 170);
+  --chart-5: oklch(0.6 0 0);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.98 0.003 240);
+  --sidebar-foreground: oklch(0.18 0 0);
+  --sidebar-primary: oklch(0.6 0.13 226);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.95 0.02 226);
+  --sidebar-accent-foreground: oklch(0.24 0.03 226);
+  --sidebar-border: oklch(0.9 0.005 240);
+  --sidebar-ring: oklch(0.6 0.13 226);
+}
+
+/*
+ * Tema oscuro de marca Consultoría E3:
+ * negro (#000) como base y azul cian (#029bca) como acento.
+ */
+.dark {
+  --background: oklch(0.13 0 0);
+  --foreground: oklch(0.96 0 0);
+  --card: oklch(0.18 0 0);
+  --card-foreground: oklch(0.96 0 0);
+  --popover: oklch(0.18 0 0);
+  --popover-foreground: oklch(0.96 0 0);
+  --primary: oklch(0.64 0.124 226);          /* #029bca */
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.26 0 0);
+  --secondary-foreground: oklch(0.96 0 0);
+  --muted: oklch(0.24 0 0);
+  --muted-foreground: oklch(0.70 0 0);
+  --accent: oklch(0.26 0.02 226);
+  --accent-foreground: oklch(0.96 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.64 0.124 226);
+  --chart-1: oklch(0.64 0.124 226);
+  --chart-2: oklch(0.75 0.10 200);
+  --chart-3: oklch(0.55 0.12 250);
+  --chart-4: oklch(0.70 0.08 170);
+  --chart-5: oklch(0.60 0 0);
+  --sidebar: oklch(0.16 0 0);
+  --sidebar-foreground: oklch(0.96 0 0);
+  --sidebar-primary: oklch(0.64 0.124 226);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.26 0 0);
+  --sidebar-accent-foreground: oklch(0.96 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.64 0.124 226);
+}
+
+/*
+ * Áreas seguras del dispositivo (muesca, isla dinámica, indicador de inicio).
+ *
+ * Se exponen como variables en lugar de escribir `env()` en cada sitio por
+ * dos motivos. Uno: `env()` no se puede sobrescribir desde una hoja de
+ * pruebas, y una variable sí — así la auditoría de WebKit puede simular un
+ * iPhone con muesca inyectando `--safe-top: 47px` y comprobar que nada se
+ * descoloca. Dos: el valor de reserva queda escrito una sola vez, y no
+ * dieciséis veces repartidas por el proyecto.
+ *
+ * HOY VALEN 0 y no hacen nada: el layout raíz NO declara `viewportFit:
+ * "cover"`, así que el navegador ya encaja la página dentro del área segura
+ * por su cuenta. Se dejan escritas —y consumidas en el `<body>`— para que
+ * activar `cover` sea un cambio de una línea cuando haya un dispositivo con
+ * muesca delante con el que comprobarlo. El porqué de no activarlo está en
+ * `src/app/layout.tsx`, junto al export del viewport.
+ */
+:root,
+.dark {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/*
+ * SUELO TÁCTIL DE 44 px EN PANTALLAS DE DEDO.
+ *
+ * Por qué una regla global y no cuarenta clases repartidas: los tamaños de
+ * `button.tsx` van de 24 px (`icon-xs`) a 36 px (`lg`), y NINGUNO llega a los
+ * 44 px que pide la guía de interfaz de Apple. Parchear cada sitio deja
+ * agujeros a la primera pantalla nueva; una sola regla los cubre todos y no
+ * toca el escritorio, donde 32 px con ratón está bien.
+ *
+ * `any-pointer: coarse` y no un breakpoint de ancho: el problema es el dedo,
+ * no el ancho. Un iPad de 1024 px se toca igual que un iPhone de 320, y un
+ * portátil con la ventana estrecha se sigue usando con ratón.
+ *
+ * Y `any-pointer` y no `pointer`, que es la diferencia importante:
+ * `pointer` describe el apuntador PRIMARIO, y tanto un portátil táctil de
+ * Windows como un iPad con teclado y trackpad declaran `pointer: fine` aunque
+ * su pantalla se siga tocando con el dedo. Con el criterio primario, todo
+ * este endurecimiento quedaba inerte justo en esas máquinas. La condición
+ * correcta para AGRANDAR es «hay un dedo disponible», que es `any-pointer`.
+ * Su contrapartida —botones de 44 px en un portátil táctil manejado con
+ * ratón— se acepta a conciencia: es preferible un control grande de más a uno
+ * imposible de acertar.
+ *
+ * Por qué importa especialmente en WebKit: el preflight de Tailwind pone
+ * `-webkit-tap-highlight-color: transparent`, así que un toque que falla no
+ * produce NINGUNA respuesta visual. El usuario no distingue «no le di a nada»
+ * de «le di al de al lado», y vuelve a intentarlo sobre el mismo sitio.
+ *
+ * Solo se usa `min-*`: nada encoge, así que ninguna pantalla de escritorio
+ * cambia y los controles que ya eran grandes se quedan como estaban.
+ *
+ * El bloque va SIN `@layer` a propósito. Las utilidades de Tailwind viven en
+ * `@layer utilities`, y en la cascada lo que está fuera de toda capa gana a lo
+ * que está dentro: así un `min-h-8` suelto en cualquier pantalla no puede
+ * volver a dejar un control por debajo del suelo táctil sin querer. Si alguna
+ * vez hace falta un control deliberadamente pequeño con el dedo —una muestra
+ * de color en una paleta densa, por ejemplo—, la salida es marcar la utilidad
+ * como importante: `!min-h-6`.
+ */
+@media (any-pointer: coarse) {
+  [data-slot="button"],
+  /*
+   * TODOS los disparadores, por sufijo. No es un capricho de selector: Radix
+   * monta sus disparadores con `asChild`, y al fusionar las propiedades el
+   * `data-slot` del disparador PISA al del botón. Un botón dentro de un
+   * `SheetTrigger` deja de ser `data-slot="button"` y pasa a ser
+   * `data-slot="sheet-trigger"`, así que se escapaba de la primera lista —y
+   * tampoco entraba por `button:not([data-slot])`, porque data-slot sí tiene—.
+   * Medido: el botón de hamburguesa del menú móvil, que es el control de
+   * navegación principal en un teléfono, se quedaba en 32×32; y con él los
+   * disparadores de todos los diálogos y menús de la aplicación.
+   */
+  [data-slot$="-trigger"],
+  [data-slot="dropdown-menu-item"],
+  [data-slot="dropdown-menu-checkbox-item"],
+  [data-slot="dropdown-menu-radio-item"],
+  [data-slot="select-item"],
+  [data-slot="input"],
+  /*
+   * Y los controles que NO pasan por una primitiva: cabeceras de tabla
+   * ordenables, pastillas de filtro, enlaces de fila. La primera versión de
+   * esta regla solo listaba `data-slot`, y una medición en WebKit encontró
+   * doce cabeceras de ordenación de 20 px de alto que se colaban por ese
+   * hueco. Un `<button>` suelto es tan tocable como uno con atributo.
+   *
+   * CUIDADO con los enlaces: `min-height` es inerte sobre una caja DE LÍNEA,
+   * así que un `<a>` dentro de un párrafo no engorda el renglón. Pero un
+   * enlace que sea ítem de un contenedor flex o de rejilla se «blockifica»
+   * por especificación (CSS Display 3) y SÍ crece. No es teoría: la banda de
+   * aviso de vacaciones es `flex` y su enlace pasaba de 20 a 44 px, con lo
+   * que la banda entera crecía 24 px en TODAS las páginas internas. Los casos
+   * así se marcan con `data-tactil="ampliado"`.
+   */
+  button:not([data-slot]):not([data-tactil]),
+  a[href]:not([data-tactil]),
+  [role="button"]:not([data-slot]):not([data-tactil]),
+  /*
+   * La fila entera de una casilla o un interruptor, cuando viene envuelta en
+   * su `<label>`. Es mejor que agrandar el control: el `<label>` ya conmuta al
+   * tocarlo en cualquier punto, así que dar altura a la fila convierte los 44
+   * px en área REAL, sin superponer nada al vecino.
+   */
+  label:has(> input[type="checkbox"]),
+  label:has(> input[type="radio"]),
+  label:has([data-slot="checkbox"]),
+  label:has([data-slot="switch"]) {
+    min-height: 44px;
+  }
+
+  /*
+   * Vía de escape: `data-tactil="ampliado"`.
+   *
+   * Para el control diminuto cuyo TAMAÑO VISUAL es parte del diseño y que
+   * estirar afearía: la equis de 20 px que quita un adjunto dentro de su chip,
+   * o el interruptor de tema, que es una píldora de 28×48 y estirada a 44 de
+   * alto se convierte en un óvalo. Conserva su caja y gana el área de toque
+   * con un pseudo-elemento centrado que no ocupa sitio en el flujo.
+   *
+   * ÚSALO SOLO EN CONTROLES AISLADOS. El pseudo-elemento mide 44×44 y se
+   * prueba por encima de lo que tenga alrededor: en una lista de filas de 26
+   * px acabaría robándole el toque a la fila vecina. Para filas apretadas, lo
+   * correcto es dar altura a la fila (a su `<label>`), no superponer un
+   * objetivo invisible.
+   */
+  [data-tactil="ampliado"] {
+    position: relative;
+  }
+  [data-tactil="ampliado"]::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /*
+   * Los botones de solo icono no tienen texto que los ensanche: sin esto
+   * quedarían de 24×44, una pastilla estrecha igual de difícil de acertar.
+   *
+   * EXCEPCIÓN `[data-day]`: los días del calendario también son botones de
+   * icono, pero son SIETE repartiéndose el ancho de una fila. Un mínimo de 44
+   * px los suma a 308 y en un móvil de 320 solo hay 288 dentro de la tarjeta:
+   * la primera versión de esta regla dejaba el domingo cortado fuera de la
+   * pantalla. En una rejilla de columnas iguales el ancho no se puede imponer,
+   * se reparte; ahí el tamaño táctil se gana por el ALTO, que sí manda
+   * `--cell-size` a través de la celda.
+   */
+  /* Por `data-size` y no por `data-slot`: un botón de icono dentro de un
+     disparador de Radix pierde su `data-slot` (ver arriba) pero conserva el
+     `data-size`, que es lo que de verdad dice «esto no tiene texto que lo
+     ensanche». */
+  [data-size^="icon"]:not([data-day]) {
+    min-width: 44px;
+  }
+
+  /*
+   * NO se agranda la casilla con un pseudo-elemento.
+   *
+   * Era la primera idea —conservar los 16 px visuales y poner encima un
+   * objetivo invisible de 44×44— y estaba mal: un overlay de 44 px sobre una
+   * fila de 26 sobresale catorce píxeles por arriba y por abajo, y como
+   * elemento posicionado se prueba por encima del contenido de los hermanos
+   * siguientes. En la lista de firmantes, tocar el nombre de una fila marcaba
+   * la casilla de la fila ANTERIOR: la regla puesta para no errar el objetivo
+   * pasaba a provocar errores.
+   *
+   * Lo que sí se hace está arriba: dar 44 px de alto al `<label>` que las
+   * envuelve. El área crece igual, es real y no invade a nadie.
+   */
+}
+
+/*
+ * Banda de aviso de vacaciones (header del área interna).
+ *
+ * La pista contiene el mensaje DOS veces y se desplaza exactamente la mitad
+ * de su ancho: al reiniciarse, el fotograma es idéntico al inicial y no se ve
+ * el salto. Por eso el componente duplica el texto y por eso el porcentaje es
+ * 50 y no 100.
+ *
+ * Va aquí y no como utilidad de Tailwind porque `@keyframes` no se puede
+ * expresar con una clase; el componente la consume con `animate-[…]` y la
+ * apaga con `motion-reduce:animate-none`.
+ */
+@keyframes e3-desplazamiento {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+
+
+
+
+
+/*
+ * (Aquí vivían `red-fundida-movil` y `red-fundida-escritorio`, dos máscaras de
+ * degradado que fundían la red animada con el fondo de las pantallas de
+ * acceso. Se retiraron el 2026-08-15 tras medirlas: en un monitor de 2560×1400
+ * con dpr 2 la escena iba a **22 fps con la máscara y 58 sin ella**, y a 60
+ * quitando el lienzo pero dejando la máscara. Lo caro no era la red: era
+ * componer una capa del tamaño del viewport en cada fotograma para
+ * enmascararla. El mismo desvanecido lo hace ahora el propio lienzo con una
+ * raíz cuadrada por nodo, vía las props de foco de `RedAnimada`.
+ *
+ * Queda escrito porque `mask-image` es una solución que se le ocurre a
+ * cualquiera —a mí la primera— y conviene saber que ya se probó y cuánto
+ * costó.)
+ */
+
+/*
+ * AUTORRELLENO EN TEMA OSCURO.
+ *
+ * Ni Chrome ni WebKit dejan cambiar el fondo que pintan al autorrellenar un
+ * campo: es un amarillo pálido (o un azul pálido) por encima de cualquier
+ * `background-color`. En una pantalla de acceso en oscuro eso es el defecto
+ * más visible que existe — el formulario entero en negro y los dos campos
+ * amarillos, justo en la primera impresión de la marca. Y no aparece nunca
+ * mientras se desarrolla, porque el gestor de contraseñas no rellena
+ * localhost: se descubre en producción, o no se descubre.
+ *
+ * Lo único que ambos motores respetan es una transición absurdamente larga:
+ * el fondo original nunca llega a cambiar. `-webkit-text-fill-color` hace
+ * falta aparte, porque `color` tampoco se aplica al texto autorrellenado.
+ *
+ * Se escribe con los tokens y no con un color fijo, así vale igual en el tema
+ * claro del resto de la aplicación.
+ */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--foreground);
+  caret-color: var(--foreground);
+  transition: background-color 100000s ease-in-out 0s;
+}
+
+/*
+ * RESPIRACIÓN del bucket que duele («Sin primera respuesta»).
+ *
+ * Va aquí y no como utilidad suelta por lo mismo que `e3-desplazamiento`:
+ * `@keyframes` no se puede declarar desde una clase de Tailwind. Pero hay una
+ * segunda razón, y es la importante: **la parada por
+ * `prefers-reduced-motion` viaja DENTRO de la utilidad**. Si el movimiento se
+ * escribiera en el componente con `animate-[...]`, respetar la preferencia
+ * dependería de que quien lo escriba se acuerde de poner `motion-safe:`, y
+ * eso se olvida exactamente una vez. Aquí no hay nada que recordar.
+ *
+ * Lo que late es un HALO, no la opacidad ni el color del texto. Un pulso de
+ * opacidad hace que el contraste baje media docena de veces por minuto justo
+ * en el dato que más urge leer, y el número quedaría por debajo del suelo la
+ * mitad del tiempo. El halo crece y se desvanece por fuera del borde, así que
+ * el texto mantiene su contraste completo en todo momento.
+ *
+ * Y el color NO es la única señal: el bucket dice «Sin primera respuesta» y su
+ * nota explica qué significa. Para quien no distingue el rojo, y para quien
+ * usa un lector de pantalla, la palabra es la que informa.
+ */
+@keyframes e3-respirar {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--destructive) 55%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 7px color-mix(in oklab, var(--destructive) 0%, transparent);
+  }
+}
+
+.e3-respira {
+  animation: e3-respirar 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .e3-respira {
+    animation: none;
+    /* Sin movimiento, el halo se queda QUIETO en vez de desaparecer: la señal
+       de «esto es lo urgente» no puede depender de que la persona tolere el
+       movimiento. */
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 35%, transparent);
+  }
+}

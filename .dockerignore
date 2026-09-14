@@ -1,0 +1,20 @@
+# dependencias y artefactos de build (los construye la imagen)
+/node_modules
+/.next
+/out
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# la base local vive en el volumen; SOLO viaja la semilla de prueba
+/datos
+!datos/vacaciones-e3.db.gz
+
+# variables de entorno (las inyecta Coolify)
+.env
+.env.local
+.env.*.local
+
+# desarrollo y sistema
+*.log
+.DS_Store
+.claude

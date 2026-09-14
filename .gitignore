@@ -1,0 +1,24 @@
+# dependencias
+/node_modules
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# base de datos local y comprobantes subidos
+/datos
+
+# variables de entorno
+.env
+.env.local
+.env.*.local
+
+# sistema
+.DS_Store
+*.pem
+npm-debug.log*
+
+# la semilla de prueba SÍ va al repo (la necesita la imagen Docker)
+!datos/vacaciones-e3.db.gz
