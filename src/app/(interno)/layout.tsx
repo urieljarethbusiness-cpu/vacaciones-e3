@@ -23,7 +23,11 @@ export default async function LayoutInterno({
   };
 
   return (
-    <div className="flex min-h-0 flex-1">
+    // `overflow-hidden`: el scroll de la aplicación vive SOLO en el <main>.
+    // Así el documento nunca se desplaza y la barra lateral queda FIJA en
+    // escritorio (con `sticky top-0` de respaldo) aunque una página traiga
+    // contenido más alto que el viewport.
+    <div className="flex min-h-0 flex-1 overflow-hidden">
       <BarraLateral {...navegacion} />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <div className="z-40 shrink-0">

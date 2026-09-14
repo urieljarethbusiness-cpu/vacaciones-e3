@@ -152,7 +152,7 @@ export default function LayoutAcceso({
           */}
           <p className="text-pretty text-base/[1.55] text-white/[0.78] lg:max-w-[30rem] lg:text-[2.375rem]/[1.06] lg:font-light lg:tracking-[-0.03em] lg:text-white xl:max-w-[36rem] xl:text-[2.875rem]/[1.04]">
             Aquí siempre sabes{" "}
-            <span className={RESALTE_TITULAR}>en qué va lo tuyo</span>
+            <span className={RESALTE_TITULAR}>qué días te tocan</span>
           </p>
 
           {/* El apoyo, solo desde `lg`. Sube de 15 px / white-60 (7,34:1) a
@@ -162,8 +162,8 @@ export default function LayoutAcceso({
               cuerpo, porque lo que falla con la edad es volver al principio del
               renglón siguiente. */}
           <p className="mt-5 hidden max-w-[34ch] text-pretty text-[1.0625rem]/[1.7] text-white/[0.78] lg:block">
-            Nos cuentas lo que necesitas y lo ves avanzar. Sin llamar para
-            preguntar, sin quedarte con la duda.
+            Pide con dos semanas de aviso, sigue tu saldo y disfruta tu
+            descanso. Sin llamar para preguntar, sin quedarte con la duda.
           </p>
         </div>
 
@@ -186,7 +186,8 @@ export default function LayoutAcceso({
             aria-hidden="true"
             className="mb-3.5 block h-0.5 w-10 bg-primary/85"
           />
-          Acceso privado de Consultoría E3. Cada persona ve únicamente lo suyo.
+          Acceso privado del Sistema de Vacaciones de Consultoría E3. Cada
+          persona ve únicamente lo suyo.
         </p>
       </aside>
     </div>

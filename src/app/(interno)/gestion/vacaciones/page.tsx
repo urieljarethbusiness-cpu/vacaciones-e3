@@ -10,9 +10,7 @@ import {
   saldosEquipo,
 } from "@/lib/db/consultas";
 import {
-  claseEstado,
   estiloTipo,
-  etiquetaEstado,
   etiquetaTipo,
   formatearRango,
   type AdjuntoAusencia,
@@ -33,6 +31,7 @@ import {
   DialogoEditarSolicitud,
 } from "@/components/vacaciones/dialogo-editar-solicitud";
 import { DialogoRegistrarAusencia } from "@/components/vacaciones/dialogo-registrar-ausencia";
+import { SelectorEstado } from "@/components/vacaciones/selector-estado";
 import { FiltrosAusencias } from "@/components/vacaciones/filtros-ausencias";
 import {
   TablaSaldosEquipo,
@@ -190,7 +189,12 @@ export default async function PaginaGestionVacaciones({
                           {s.dias_habiles === 1 ? "día hábil" : "días hábiles"}
                         </p>
                       </div>
-                      <EtiquetaEstado estado={s.estado} />
+                      <SelectorEstado
+                        solicitudId={s.id}
+                        estado={s.estado}
+                        fechaInicio={s.fecha_inicio}
+                        fechaFin={s.fecha_fin}
+                      />
                     </div>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       <EtiquetaTipo ausencia={s} />
@@ -199,12 +203,13 @@ export default async function PaginaGestionVacaciones({
                         {s.registrada_por_gestor ? "RR. HH." : "el empleado"}
                       </span>
                     </div>
-                    {(s.motivo || s.comentario_empleado) && (
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        {s.motivo || s.comentario_empleado}
-                      </p>
-                    )}
                     <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                      <SelectorEstado
+                        solicitudId={s.id}
+                        estado={s.estado}
+                        fechaInicio={s.fecha_inicio}
+                        fechaFin={s.fecha_fin}
+                      />
                       <BotonEvidencia
                         adjuntos={adjuntosPorSolicitud.get(s.id) ?? []}
                       />
@@ -248,7 +253,12 @@ export default async function PaginaGestionVacaciones({
                           {s.dias_habiles}
                         </TableCell>
                         <TableCell>
-                          <EtiquetaEstado estado={s.estado} />
+                          <SelectorEstado
+                            solicitudId={s.id}
+                            estado={s.estado}
+                            fechaInicio={s.fecha_inicio}
+                            fechaFin={s.fecha_fin}
+                          />
                         </TableCell>
                         <TableCell className="text-muted-foreground">
                           {s.registrada_por_gestor ? "RR. HH." : "Empleado"}
@@ -292,16 +302,6 @@ export default async function PaginaGestionVacaciones({
         </TabsContent>
       </Tabs>
     </div>
-  );
-}
-
-function EtiquetaEstado({ estado }: { estado: string }) {
-  return (
-    <span
-      className={`inline-block shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${claseEstado(estado)}`}
-    >
-      {etiquetaEstado(estado)}
-    </span>
   );
 }
 

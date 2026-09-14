@@ -50,22 +50,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // `dark` por defecto EN EL SERVIDOR: los tokens oscuros viven en `:root`
+    // (globals.css), así que el HTML llega ya oscuro, sin script bloqueante
+    // ni la advertencia de React 19 por renderizar <script> en un componente.
+    // El tema claro es la excepción `.light`.
     <html
       lang="es"
+      className={`dark ${poppins.variable} ${bebasNeue.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
-      className={`${poppins.variable} ${bebasNeue.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body
         className="flex h-dvh flex-col font-sans"
         suppressHydrationWarning
       >
-        {/* Aplica el tema guardado antes de pintar (evita parpadeo). Oscuro
-            por defecto, igual que el original. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("theme");t=t==="light"||t==="dark"?t:"dark";var d=document.documentElement;d.classList.remove("light","dark");d.classList.add(t);d.style.colorScheme=t}catch(e){}})()`,
-          }}
-        />
         <ProveedorTema>
           {children}
           <Toaster

@@ -57,9 +57,9 @@ export function FormularioAcceso({
 
   return (
     <>
-      <h1 className={TITULO}>Acceso del equipo</h1>
+      <h1 className={TITULO}>Sistema de Vacaciones E3</h1>
       <p className={ENTRADILLA}>
-        Entra con tu correo de Consultoría E3.
+        Entra con tu correo de Consultoría E3 y mira tus días.
       </p>
 
       <form onSubmit={enviar} className="mt-8 grid gap-[1.375rem]">

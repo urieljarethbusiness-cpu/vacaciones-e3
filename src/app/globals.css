@@ -95,46 +95,15 @@
  * fondo blanco cálido, texto casi negro, acento azul cian #029bca.
  * Pensado para lectura cómoda de clientes +50 años.
  */
-:root {
-  --background: oklch(0.99 0.002 240);
-  --foreground: oklch(0.18 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0 0);
-  --primary: oklch(0.6 0.13 226);            /* #029bca */
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0.004 240);
-  --secondary-foreground: oklch(0.24 0 0);
-  --muted: oklch(0.965 0.004 240);
-  --muted-foreground: oklch(0.48 0.01 240);
-  --accent: oklch(0.95 0.02 226);
-  --accent-foreground: oklch(0.24 0.03 226);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.005 240);
-  --input: oklch(0.9 0.005 240);
-  --ring: oklch(0.6 0.13 226);
-  --chart-1: oklch(0.6 0.13 226);
-  --chart-2: oklch(0.7 0.1 200);
-  --chart-3: oklch(0.5 0.12 250);
-  --chart-4: oklch(0.65 0.09 170);
-  --chart-5: oklch(0.6 0 0);
-  --radius: 0.75rem;
-  --sidebar: oklch(0.98 0.003 240);
-  --sidebar-foreground: oklch(0.18 0 0);
-  --sidebar-primary: oklch(0.6 0.13 226);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.95 0.02 226);
-  --sidebar-accent-foreground: oklch(0.24 0.03 226);
-  --sidebar-border: oklch(0.9 0.005 240);
-  --sidebar-ring: oklch(0.6 0.13 226);
-}
-
 /*
- * Tema oscuro de marca Consultoría E3:
- * negro (#000) como base y azul cian (#029bca) como acento.
+ * TEMA POR DEFECTO: OSCURO — marca Consultoría E3: negro (#000) como base y
+ * azul cian (#029bca) como acento. Vive en `:root` (y no en `.dark`) a
+ * propósito: el HTML llega del servidor YA oscuro, sin script bloqueante que
+ * lo aplique, así que no hay destello de tema claro ni advertencia de React.
+ * El tema CLARO es la excepción y va después en `.light`.
  */
-.dark {
+:root {
+  color-scheme: dark;
   --background: oklch(0.13 0 0);
   --foreground: oklch(0.96 0 0);
   --card: oklch(0.18 0 0);
@@ -158,6 +127,7 @@
   --chart-3: oklch(0.55 0.12 250);
   --chart-4: oklch(0.70 0.08 170);
   --chart-5: oklch(0.60 0 0);
+  --radius: 0.75rem;
   --sidebar: oklch(0.16 0 0);
   --sidebar-foreground: oklch(0.96 0 0);
   --sidebar-primary: oklch(0.64 0.124 226);
@@ -166,6 +136,46 @@
   --sidebar-accent-foreground: oklch(0.96 0 0);
   --sidebar-border: oklch(1 0 0 / 12%);
   --sidebar-ring: oklch(0.64 0.124 226);
+}
+
+/*
+ * Tema claro (opt-in vía `.light` en <html>): fondo blanco cálido, texto casi
+ * negro, acento azul cian #029bca. Pensado para lectura cómoda de clientes
+ * +50 años. Va DESPUÉS de `:root` para ganar por orden de cascada.
+ */
+.light {
+  color-scheme: light;
+  --background: oklch(0.99 0.002 240);
+  --foreground: oklch(0.18 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0 0);
+  --primary: oklch(0.6 0.13 226);            /* #029bca */
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.96 0.004 240);
+  --secondary-foreground: oklch(0.24 0 0);
+  --muted: oklch(0.965 0.004 240);
+  --muted-foreground: oklch(0.48 0.01 240);
+  --accent: oklch(0.95 0.02 226);
+  --accent-foreground: oklch(0.24 0.03 226);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0.005 240);
+  --input: oklch(0.9 0.005 240);
+  --ring: oklch(0.6 0.13 226);
+  --chart-1: oklch(0.6 0.13 226);
+  --chart-2: oklch(0.7 0.1 200);
+  --chart-3: oklch(0.5 0.12 250);
+  --chart-4: oklch(0.65 0.09 170);
+  --chart-5: oklch(0.6 0 0);
+  --sidebar: oklch(0.98 0.003 240);
+  --sidebar-foreground: oklch(0.18 0 0);
+  --sidebar-primary: oklch(0.6 0.13 226);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.95 0.02 226);
+  --sidebar-accent-foreground: oklch(0.24 0.03 226);
+  --sidebar-border: oklch(0.9 0.005 240);
+  --sidebar-ring: oklch(0.6 0.13 226);
 }
 
 /*
@@ -186,7 +196,7 @@
  * `src/app/layout.tsx`, junto al export del viewport.
  */
 :root,
-.dark {
+.light {
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
