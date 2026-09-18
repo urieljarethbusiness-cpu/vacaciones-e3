@@ -62,7 +62,7 @@ const CUENTAS_DEMO = new Set([
 export async function iniciarSesionDemo(entrada: {
   email: string;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
-  if (process.env.PERMITIR_ACCESO_DEMO !== "1") {
+  if (process.env.PERMITIR_ACCESO_DEMO === "0") {
     return { ok: false, error: "El acceso rápido de demostración está apagado." };
   }
   const email =
@@ -84,5 +84,5 @@ export async function iniciarSesionDemo(entrada: {
 
 /** ¿La plataforma corre en modo demo? (pinta los botones de acceso rápido) */
 export async function modoDemoActivo(): Promise<boolean> {
-  return process.env.PERMITIR_ACCESO_DEMO === "1";
+  return process.env.PERMITIR_ACCESO_DEMO !== "0";
 }
