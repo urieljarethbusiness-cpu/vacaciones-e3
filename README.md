@@ -100,18 +100,30 @@ La base `datos/vacaciones-e3.db` se crea sola en el primer arranque con su
 esquema y semillas (escala LFT, festivos 2025–2031, tipos de ausencia,
 dominios de la casa y cuentas de prueba).
 
-### Cuentas de prueba
+### Cuentas de prueba y magic login
 
-| Correo | Contraseña | Rol |
-|---|---|---|
-| `superadmin@consultoriae3.com` | `E3-Super2026` | Superadministrador (sin vacaciones propias) |
-| `rrhh@grupo-e3.com` | `E3-Rrhh2026` | Administrador / RR. HH. |
-| `encargado@grupo-e3.com` | `E3-Enc2026` | Encargado de Área |
-| `ana@consultoriae3.com` | `E3-Ana2026` | Empleado (con antigüedad) |
-| `luis@grupo-e3.com` | `E3-Luis2026` | Empleado (primer año, sin días) |
+La demo vive en **https://demo-vacacionese3.urieljareth.org** con **magic
+login**: en el login hay un panel «Acceso rápido de demostración» que entra
+con un clic, sin contraseña (activo por defecto; se apaga definiendo
+`PERMITIR_ACCESO_DEMO=0`). Contraseñas clásicas, por si se prefieren:
 
-Cambia estas contraseñas antes de cualquier uso real (o borra
-`datos/vacaciones-e3.db` y siembra otras cuentas).
+| Cuenta (magic login) | Correo | Contraseña | Rol |
+|---|---|---|---|
+| Uriel Jareth | `superadmin@consultoriae3.com` | `E3-Super2026` | Superadministrador (sin vacaciones propias) |
+| Karla Montenegro | `rrhh@grupo-e3.com` | `E3-Rrhh2026` | RR. HH. (aprueba y registra) |
+| Diego Fuentes | `encargado@grupo-e3.com` | `E3-Enc2026` | Encargado de Área |
+| Ana Lozano | `ana@consultoriae3.com` | `E3-Ana2026` | Empleado con solicitudes |
+| Fernanda Salas | `fernanda@consultoriae3.com` | `E3-Fer2026` | Empleado con ciclo por reiniciar (aviso rojo) |
+| Ricardo Méndez | `ricardo@grupo-e3.com` | `E3-Ric2026` | Encargado de Web |
+| Paola Gómez | `paola@grupo-e3.com` | `E3-Pao2026` | Empleado con pendientes |
+| Sofía Herrera | `sofia@consultoriae3.com` | `E3-Sof2026` | Empleado con permiso tomado |
+| Luis Ramírez | `luis@grupo-e3.com` | `E3-Luis2026` | Primer año, sin días (rechazada de ejemplo) |
+
+La base demo viene poblada (`scripts/datos-demo.ts`): 10 personas con
+antigüedades variadas y solicitudes en todos los estados (pendientes,
+aprobadas, rechazada y cancelada), festivos LFT 2025–2036 y la escala del
+art. 76 completa. Para regenerarla: borra `datos/vacaciones-e3.db` y corre
+`node scripts/datos-demo.ts`.
 
 ### Verificación
 
